@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Col, Container, Row, Button, Form, Image, FormGroup, FormLabel, InputGroup, FormControl, Alert } from "react-bootstrap"
-import image from "../assets/images/image.png"
+import image from "../assets/images/image.jpg"
 import "../assets/css/Login.css"
 
 const Login = () => {
@@ -34,11 +34,10 @@ const Login = () => {
                 <Col md={1}></Col>
                 <Col md={10}>
                     <Row>
-                        <Col md={6} className={"mt-5 login-form box"} style={{ padding: "0%" }}>
+                        <Col md={6} className="d-none d-md-block mt-5 login-form box" style={{ padding: "0%" }}>
                             <Image className='image'
                                 src={image}
-                                width="100%"
-                                height="100%"
+                                fluid
                             />
                         </Col>
                         <Col md={6} className={"mt-5 login-form box"} >
@@ -65,7 +64,7 @@ const Login = () => {
                                     />
                                 </Form.Group>
 
-                                <Button variant="primary" type="submit">
+                                <Button variant="warning" type="submit">
                                     Iniciar
                                 </Button>
                             </Form>
