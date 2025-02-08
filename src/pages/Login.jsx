@@ -17,7 +17,7 @@ const Login = () => {
             return;
         }
 
-        // Aqui você pode adicionar a lógica para autenticar o usuário
+        // lógica para autenticar o usuário
         console.log('Nome do usuário:', username);
         console.log('Email:', email);
 
