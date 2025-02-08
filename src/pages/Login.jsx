@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { Col, Container, Row, Button, Form, Image, FormGroup, FormLabel, InputGroup, FormControl, Alert } from "react-bootstrap"
 import image from "../assets/images/image.jpg"
 import "../assets/css/Login.css"
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const [nomeUsuario, setNomeUsuario] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
+
+    let navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -20,6 +23,7 @@ function Login() {
         // lógica para autenticar o usuário
         console.log('Nome do usuário:', nomeUsuario);
         console.log('Email:', email);
+        navigate("/questionario")
 
         // Limpar os campos após o envio
         setNomeUsuario('');
