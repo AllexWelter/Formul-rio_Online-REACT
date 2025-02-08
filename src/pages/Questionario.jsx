@@ -1,5 +1,5 @@
 import { use, useState } from "react"
-import { Button, Card, Container, Form } from "react-bootstrap"
+import { Button, Card, Container, Form, FormCheck } from "react-bootstrap"
 
 
 const questao = [{
@@ -33,16 +33,26 @@ function Questionario() {
             <Card>
                 <Card.Body>
                     <Card.Title>
-                        {}
+                        {questao[perguntaAtual].questao}
                     </Card.Title>
                     <Form>
-
+                        {questao[perguntaAtual].alternativas.map((alt, index) => (
+                            <FormCheck
+                                key={index}
+                                type="radio"
+                                id={`alternativa-${index}`}
+                                label={alt}
+                                name="alternativas"
+                                checked={respostaSelecionada === index}
+                                onChange={() => setRespostaSelecionada(index)}
+                            />
+                        ))}
                     </Form>
                     <div className="mt-3">
-                        <Button variant="secondary">
+                        <Button variant="secondary" onClick={irAnterior} disabled={perguntaAtual === 0}>
                             Anterior  
                         </Button>
-                        <Button variant="primary">
+                        <Button variant="primary" onClick={irProxima} disabled={perguntaAtual === questao.length - 1}>
                             Próxima
                         </Button>
                     </div>
