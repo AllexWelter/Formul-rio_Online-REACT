@@ -2,7 +2,7 @@ import { use, useState } from "react"
 import { Button, Card, Container, Form, FormCheck } from "react-bootstrap"
 
 
-const questao = [{
+const questoes = [{
     questao: "Pergunta 1",
     alternativas: ["Alternativa 1", "Alternativa 2", "Alternartiva 3", "Alternativa 4"]
 }]
@@ -14,7 +14,7 @@ function Questionario() {
     const [respostaSelecionada, setRespostaSelecionada] = useState()
 
     const irProxima = () => {
-        if (perguntaAtual < questao.length - 1) {
+        if (perguntaAtual < questoes.length - 1) {
             setPerguntaAtual(perguntaAtual + 1)
             setRespostaSelecionada(null)
         }
@@ -33,10 +33,10 @@ function Questionario() {
             <Card>
                 <Card.Body>
                     <Card.Title>
-                        {questao[perguntaAtual].questao}
+                        {questoes[perguntaAtual].questao}
                     </Card.Title>
                     <Form>
-                        {questao[perguntaAtual].alternativas.map((alt, index) => (
+                        {questoes[perguntaAtual].alternativas.map((alt, index) => (
                             <FormCheck
                                 key={index}
                                 type="radio"
@@ -52,7 +52,7 @@ function Questionario() {
                         <Button variant="secondary" onClick={irAnterior} disabled={perguntaAtual === 0}>
                             Anterior  
                         </Button>
-                        <Button variant="primary" onClick={irProxima} disabled={perguntaAtual === questao.length - 1}>
+                        <Button variant="primary" onClick={irProxima} disabled={perguntaAtual === questoes.length - 1}>
                             Próxima
                         </Button>
                     </div>
