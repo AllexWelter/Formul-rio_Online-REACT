@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Login } from "../pages/Login";
 import { Questionario } from "../pages/Questionario";
 
-
 function RouteApp() {
     return(
         <BrowserRouter>
