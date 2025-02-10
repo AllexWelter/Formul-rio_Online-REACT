@@ -1,4 +1,5 @@
 import { Button, Card, CardTitle, Container } from "react-bootstrap"
+import { Questionario } from "./Questionario"
 
 
 function Resultado({pontuacao}) {

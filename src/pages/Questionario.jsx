@@ -1,5 +1,6 @@
 import { use, useState } from "react"
 import { Button, Card, Container, Form, FormCheck } from "react-bootstrap"
+import { Resultado } from "./Resultado"
 
 
 const questoes = [{
@@ -36,7 +37,7 @@ function Questionario() {
     const [perguntaAtual, setPerguntaAtual] = useState(0)
     const [respostaSelecionada, setRespostaSelecionada] = useState(null)
     const [pontuacao, setPontuacao] = useState(null)
-    const [resposta, setResposta] = useState([])
+    const [respostas, setRespostas] = useState([])
 
     const irProxima = () => {
         if (perguntaAtual < questoes.length - 1) {
@@ -54,7 +55,7 @@ function Questionario() {
 
     const finalizarQuestionario = () => {
         let pontuacaoFinal = 0
-        resposta.forEach((resposta, index) => {
+        respostas.forEach((resposta, index) => {
             if (resposta === questoes[index].respostaCorreta) {
                 pontuacaoFinal += 1
             }
@@ -62,8 +63,19 @@ function Questionario() {
         setPontuacao(pontuacaoFinal)
     }
 
-    
-    return(
+    const handleRespota = (index) => {
+        setRespostaSelecionada(index)
+        const novasRespostas = [...respostas]
+        novasRespostas[perguntaAtual] = index
+        setRespostas(novasRespostas)
+    }
+
+    if (pontuacao !== null) {
+        return <Resultado pontuacao={pontuacao} />
+    }
+
+
+    return (
         <Container className="mt-5">
             <Card>
                 <Card.Body>
@@ -85,15 +97,22 @@ function Questionario() {
                     </Form>
                     <div className="mt-3">
                         <Button variant="secondary"
-                         onClick={irAnterior} 
-                         disabled={perguntaAtual === 0}>
-                            Anterior  
+                            onClick={irAnterior}
+                            disabled={perguntaAtual === 0}>
+                            Anterior
                         </Button>
-                        <Button variant="warning" 
-                        onClick={irProxima} 
-                        disabled={perguntaAtual === questoes.length - 1}>
-                            Próxima
-                        </Button>
+                        {perguntaAtual < questoes.length - 1 ? (
+                            <Button variant="warning"
+                                onClick={irProxima}
+                                disabled={perguntaAtual === questoes.length - 1}>
+                                Próxima
+                            </Button>
+                        ) : (
+                            <Button variant="success"
+                                onClick={finalizarQuestionario}>
+                                Finalizar
+                            </Button>
+                        )}
                     </div>
                 </Card.Body>
             </Card>
@@ -101,4 +120,4 @@ function Questionario() {
     )
 }
 
-export{Questionario}
+export { Questionario }
