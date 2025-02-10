@@ -4,17 +4,29 @@ import { Button, Card, Container, Form, FormCheck } from "react-bootstrap"
 
 const questoes = [{
     questao: "Pergunta 1",
-    alternativas: ["Alternativa 1", "Alternativa 2", "Alternartiva 3", "Alternativa 4"]
+    alternativas: ["Alternativa 1", "Alternativa 2", "Alternartiva 3", "Alternativa 4"],
+    respostaCorreta: 0
 },
 {
     questao: "Pergunta 2",
-    alternativas: ["Alternativa 1", "Alternativa 2", "Alternartiva 3", "Alternativa 4"]
+    alternativas: ["Alternativa 1", "Alternativa 2", "Alternartiva 3", "Alternativa 4"],
+    respostaCorreta: 1
 },
 {
     questao: "Pergunta 3",
-    alternativas: ["Alternativa 1", "Alternativa 2", "Alternartiva 3", "Alternativa 4"]
-}
-
+    alternativas: ["Alternativa 1", "Alternativa 2", "Alternartiva 3", "Alternativa 4"],
+    respostaCorreta: 2
+},
+{
+    questao: "Pergunta 4",
+    alternativas: ["Alternativa 1", "Alternativa 2", "Alternartiva 3", "Alternativa 4"],
+    respostaCorreta: 3
+},
+{
+    questao: "Pergunta 5",
+    alternativas: ["Alternativa 1", "Alternativa 2", "Alternartiva 3", "Alternativa 4"],
+    respostaCorreta: 4
+},
 
 
 ]
@@ -23,6 +35,8 @@ function Questionario() {
 
     const [perguntaAtual, setPerguntaAtual] = useState(0)
     const [respostaSelecionada, setRespostaSelecionada] = useState(null)
+    const [pontuacao, setPontuacao] = useState(null)
+    const [resposta, setResposta] = useState([])
 
     const irProxima = () => {
         if (perguntaAtual < questoes.length - 1) {
@@ -36,6 +50,16 @@ function Questionario() {
             setPerguntaAtual(perguntaAtual - 1)
             setRespostaSelecionada(null)
         }
+    }
+
+    const finalizarQuestionario = () => {
+        let pontuacaoFinal = 0
+        resposta.forEach((resposta, index) => {
+            if (resposta === questoes[index].respostaCorreta) {
+                pontuacaoFinal += 1
+            }
+        })
+        setPontuacao(pontuacaoFinal)
     }
 
     
