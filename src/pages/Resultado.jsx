@@ -1,6 +1,6 @@
 
 
-function Resultado() {
+function Resultado({pontuacao}) {
 
     return(
         <>
@@ -9,3 +9,5 @@ function Resultado() {
         </>
     )
 }
+
+export {Resultado}
