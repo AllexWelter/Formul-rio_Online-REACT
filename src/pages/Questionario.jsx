@@ -63,7 +63,8 @@ function Questionario() {
         setPontuacao(pontuacaoFinal)
     }
 
-    const handleRespota = (index) => {
+    //merda está aqui!
+    const handleResposta = (index) => {
         setRespostaSelecionada(index)
         const novasRespostas = [...respostas]
         novasRespostas[perguntaAtual] = index

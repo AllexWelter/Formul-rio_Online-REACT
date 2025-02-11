@@ -20,7 +20,7 @@ function Login() {
             return;
         }
 
-        // lógica para autenticar o usuário
+        // lógica autenticar o usuário
         console.log('Nome do usuário:', nomeUsuario);
         console.log('Email:', email);
         navigate("/questionario")
