@@ -3,6 +3,7 @@ import { Col, Container, Row, Button, Form, Image, Alert } from "react-bootstrap
 import image from "../assets/images/image.jpg"
 import "../assets/css/Login.css"
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api'
 
 function Login() {
     const [nomeUsuario, setNomeUsuario] = useState('');
