@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
+const api = axios.create({
+    baseURL: 'http://localhost:3000/api'
+});
 
-// Iniciar quiz
 export const iniciarQuiz = async (nome, email) => {
     try {
-        const response = await axios.post(`${API_URL}/iniciar`, { nome, email });
+        const response = await api.post('/iniciar', { nome, email });
         return response.data;
     } catch (error) {
         console.error('Erro ao iniciar o quiz:', error.response?.data || error.message);
@@ -13,10 +14,9 @@ export const iniciarQuiz = async (nome, email) => {
     }
 };
 
-// Buscar pergunta por número
 export const buscarPergunta = async (numero) => {
     try {
-        const response = await axios.get(`${API_URL}/perguntas/${numero}`);
+        const response = await api.get(`/perguntas/${numero}`);
         return response.data;
     } catch (error) {
         console.error('Erro ao buscar pergunta:', error.response?.data || error.message);
@@ -24,10 +24,9 @@ export const buscarPergunta = async (numero) => {
     }
 };
 
-// Enviar respostas do quiz
 export const enviarRespostas = async (id_quiz, respostas) => {
     try {
-        const response = await axios.post(`${API_URL}/enviar`, { id_quiz, respostas });
+        const response = await api.post('/enviar', { id_quiz, respostas });
         return response.data;
     } catch (error) {
         console.error('Erro ao enviar respostas:', error.response?.data || error.message);
@@ -35,13 +34,24 @@ export const enviarRespostas = async (id_quiz, respostas) => {
     }
 };
 
-// Enviar email com resultado do quiz
+export const buscarResultado = async (id_quiz) => {
+    try {
+        const response = await api.get(`/quiz/resultado/${id_quiz}`);
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao buscar resultado:', error.response?.data || error.message);
+        throw error;
+    }
+};
+
 export const enviarEmailResultado = async (idQuiz) => {
     try {
-        const response = await axios.get(`${API_URL}/email/${idQuiz}`);
+        const response = await api.get(`/email/${idQuiz}`);
         return response.data;
     } catch (error) {
         console.error('Erro ao enviar email:', error.response?.data || error.message);
         throw error;
     }
 };
+
+export default api;

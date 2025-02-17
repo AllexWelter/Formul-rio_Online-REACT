@@ -1,24 +1,29 @@
-import { Button, Card, CardTitle, Container } from "react-bootstrap"
-import { Questionario } from "./Questionario"
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import api from '../services/api';
 
+function Resultado() {
+    const { idQuiz } = useParams();
+    const [pontuacao, setPontuacao] = useState(0);
 
-function Resultado({pontuacao}) {
+    useEffect(() => {
+        const carregarResultado = async () => {
+            try {
+                const response = await api.get(`/quiz/resultado/${idQuiz}`);
+                setPontuacao(response.data.pontuacao);
+            } catch (error) {
+                console.error('Erro ao buscar resultado:', error);
+            }
+        };
+        carregarResultado();
+    }, [idQuiz]);
 
-    return(
-        <Container className="d-flex justify-content-center align-items-center" style={{minHeight: "100vh"}}>
-            <Card className="text-center" style={{width: "18rem"}}>
-                <Card.Body>
-                    <CardTitle>Parabéns</CardTitle>
-                    <Card.Text>
-                        Oi Fulano, seu resultado foi {pontuacao}/10 !
-                    </Card.Text>
-                    <Button variant="warning" onClick={() => {{/*//logica para enviar por email*/}}}> 
-                        ENVIAR POR EMAIL    
-                    </Button>
-                </Card.Body>
-            </Card>
-        </Container>
-    )
+    return (
+        <div className="container mt-5">
+            <h1>Resultado Final</h1>
+            <p>Sua pontuação: {pontuacao}</p>
+        </div>
+    );
 }
 
-export {Resultado}
+export default Resultado;
