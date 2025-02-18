@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { Card, Button, Container } from 'react-bootstrap';
+import '../styles/Quiz.css';
 
 function Quiz() {
     const { idQuiz } = useParams();
@@ -34,37 +35,26 @@ function Quiz() {
     const responder = async () => {
         if (!alternativaSelecionada) return;
 
-        // Adiciona a resposta ao array de respostas
-        const novaResposta = {
-            id_pergunta: pergunta.id_pergunta,
-            id_alternativa: alternativaSelecionada
-        };
-        
-        const novasRespostas = [...respostas, novaResposta];
+        const novasRespostas = [...respostas, { id_pergunta: pergunta.id_pergunta, id_alternativa: alternativaSelecionada }];
         setRespostas(novasRespostas);
 
-        // Se for a última pergunta, envia todas as respostas
         if (numeroPergunta >= totalPerguntas) {
             try {
-                await api.post('/enviar', {
-                    id_quiz: idQuiz,
-                    respostas: novasRespostas
-                });
+                await api.post('/enviar', { id_quiz: idQuiz, respostas: novasRespostas });
                 navigate(`/resultado/${idQuiz}`);
             } catch (error) {
                 console.error('Erro ao enviar respostas:', error);
             }
         } else {
-            // Se não for a última, avança para a próxima pergunta
             setNumeroPergunta(numeroPergunta + 1);
             setAlternativaSelecionada(null);
         }
     };
 
     return (
-        <Container className="mt-5">
+        <Container className="quiz-container">
             {pergunta ? (
-                <Card>
+                <Card className="quiz-card">
                     <Card.Header>
                         <h4>Pergunta {numeroPergunta} de {totalPerguntas}</h4>
                     </Card.Header>
@@ -74,19 +64,14 @@ function Quiz() {
                             {pergunta.alternativas.map(alt => (
                                 <Button
                                     key={alt.id_alternativa}
-                                    variant={alternativaSelecionada === alt.id_alternativa ? "primary" : "outline-primary"}
+                                    variant={alternativaSelecionada === alt.id_alternativa ? "success" : "outline-success"}
                                     onClick={() => setAlternativaSelecionada(alt.id_alternativa)}
-                                    className="text-start"
                                 >
                                     {alt.texto}
                                 </Button>
                             ))}
                         </div>
-                        <Button 
-                            className="mt-4"
-                            onClick={responder}
-                            disabled={!alternativaSelecionada}
-                        >
+                        <Button className="mt-4 w-100" onClick={responder} disabled={!alternativaSelecionada}>
                             {numeroPergunta === totalPerguntas ? 'Finalizar' : 'Próxima'}
                         </Button>
                     </Card.Body>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { buscarResultado, enviarEmailResultado } from '../services/api';
 import { Container, Card, Button, Alert } from 'react-bootstrap';
+import '../styles/Resultado.css';
 
 function Resultado() {
     const { idQuiz } = useParams();
@@ -38,17 +39,9 @@ function Resultado() {
         }
     };
 
-    if (loading) {
-        return (
-            <Container className="mt-5">
-                <p>Carregando resultado...</p>
-            </Container>
-        );
-    }
-
     return (
-        <Container className="mt-5">
-            <Card>
+        <Container className="resultado-container">
+            <Card className="resultado-card">
                 <Card.Header>
                     <h2>Resultado Final</h2>
                 </Card.Header>
@@ -58,15 +51,9 @@ function Resultado() {
                     ) : (
                         <>
                             <h3>Sua pontuação: {pontuacao}</h3>
-                            <div className="mt-4">
-                                <Button 
-                                    onClick={handleEnviarEmail}
-                                    disabled={emailEnviado}
-                                    variant="primary"
-                                >
-                                    {emailEnviado ? 'Email Enviado!' : 'Enviar resultado por email'}
-                                </Button>
-                            </div>
+                            <Button className="mt-3" onClick={handleEnviarEmail} disabled={emailEnviado}>
+                                {emailEnviado ? 'Email Enviado!' : 'Enviar resultado por email'}
+                            </Button>
                             {emailEnviado && (
                                 <Alert variant="success" className="mt-3">
                                     Resultado enviado com sucesso para seu email!

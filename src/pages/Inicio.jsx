@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { Container, Card, Form, Button } from 'react-bootstrap';
+import '../styles/Inicio.css';
+
 
 function Inicio() {
     const [nome, setNome] = useState('');
@@ -17,11 +20,23 @@ function Inicio() {
     };
 
     return (
-        <div className="container mt-5">
-            <h1>Bem-vindo ao Quiz</h1>
-            <input type="text" placeholder="Nome" value={nome} onChange={e => setNome(e.target.value)} />
-            <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-            <button onClick={iniciarQuiz}>Iniciar</button>
+        <div className="inicio-container">
+            
+                <Card className="inicio-card">
+                    <Card.Body>
+                        <h1 className="text-center">Bem-vindo ao Quiz</h1>
+                        <Form>
+                            <Form.Group className="mb-3">
+                                <Form.Control type="text" placeholder="Nome" value={nome} onChange={e => setNome(e.target.value)} />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Control type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+                            </Form.Group>
+                            <Button className="w-100" onClick={iniciarQuiz}>Iniciar</Button>
+                        </Form>
+                    </Card.Body>
+                </Card>
+            
         </div>
     );
 }
