@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { Card, Button, Container } from 'react-bootstrap';
 
 function Quiz() {
     const { idQuiz } = useParams();
@@ -8,6 +9,7 @@ function Quiz() {
     const [alternativaSelecionada, setAlternativaSelecionada] = useState(null);
     const [numeroPergunta, setNumeroPergunta] = useState(1);
     const [totalPerguntas, setTotalPerguntas] = useState(0);
+    const [respostas, setRespostas] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -17,16 +19,12 @@ function Quiz() {
     const carregarPergunta = async () => {
         try {
             const response = await api.get(`/perguntas/${numeroPergunta}`);
-            console.log('Resposta da API:', response.data); // Para depuração
-    
-            if (response.data && response.data.pergunta && Array.isArray(response.data.alternativas)) {
+            if (response.data && response.data.pergunta) {
                 setPergunta({
                     ...response.data.pergunta,
                     alternativas: response.data.alternativas
                 });
                 setTotalPerguntas(response.data.totalPerguntas);
-            } else {
-                console.error('Erro: Estrutura da resposta inesperada.', response.data);
             }
         } catch (error) {
             console.error('Erro ao carregar pergunta:', error);
@@ -35,42 +33,68 @@ function Quiz() {
 
     const responder = async () => {
         if (!alternativaSelecionada) return;
-        try {
-            await api.post('/enviar', {
-                id_quiz: idQuiz,
-                respostas: [{ id_pergunta: pergunta.id_pergunta, id_alternativa: alternativaSelecionada }]
-            });
-            if (numeroPergunta < totalPerguntas) {
-                setNumeroPergunta(numeroPergunta + 1);
-                setAlternativaSelecionada(null);
-            } else {
+
+        // Adiciona a resposta ao array de respostas
+        const novaResposta = {
+            id_pergunta: pergunta.id_pergunta,
+            id_alternativa: alternativaSelecionada
+        };
+        
+        const novasRespostas = [...respostas, novaResposta];
+        setRespostas(novasRespostas);
+
+        // Se for a última pergunta, envia todas as respostas
+        if (numeroPergunta >= totalPerguntas) {
+            try {
+                await api.post('/enviar', {
+                    id_quiz: idQuiz,
+                    respostas: novasRespostas
+                });
                 navigate(`/resultado/${idQuiz}`);
+            } catch (error) {
+                console.error('Erro ao enviar respostas:', error);
             }
-        } catch (error) {
-            console.error('Erro ao enviar resposta:', error);
+        } else {
+            // Se não for a última, avança para a próxima pergunta
+            setNumeroPergunta(numeroPergunta + 1);
+            setAlternativaSelecionada(null);
         }
     };
 
     return (
-        <div className="container mt-5">
+        <Container className="mt-5">
             {pergunta ? (
-                <div>
-                    <h2>{pergunta.texto}</h2>
-                    {Array.isArray(pergunta.alternativas) && pergunta.alternativas.length > 0 ? (
-                        pergunta.alternativas.map(alt => (
-                            <button key={alt.id_alternativa} onClick={() => setAlternativaSelecionada(alt.id_alternativa)}>
-                                {alt.texto}
-                            </button>
-                        ))
-                    ) : (
-                        <p>Alternativas não disponíveis.</p>
-                    )}
-                    <button onClick={responder} disabled={!alternativaSelecionada}>Próxima</button>
-                </div>
+                <Card>
+                    <Card.Header>
+                        <h4>Pergunta {numeroPergunta} de {totalPerguntas}</h4>
+                    </Card.Header>
+                    <Card.Body>
+                        <Card.Title>{pergunta.texto}</Card.Title>
+                        <div className="d-grid gap-2 mt-3">
+                            {pergunta.alternativas.map(alt => (
+                                <Button
+                                    key={alt.id_alternativa}
+                                    variant={alternativaSelecionada === alt.id_alternativa ? "primary" : "outline-primary"}
+                                    onClick={() => setAlternativaSelecionada(alt.id_alternativa)}
+                                    className="text-start"
+                                >
+                                    {alt.texto}
+                                </Button>
+                            ))}
+                        </div>
+                        <Button 
+                            className="mt-4"
+                            onClick={responder}
+                            disabled={!alternativaSelecionada}
+                        >
+                            {numeroPergunta === totalPerguntas ? 'Finalizar' : 'Próxima'}
+                        </Button>
+                    </Card.Body>
+                </Card>
             ) : (
                 <p>Carregando pergunta...</p>
             )}
-        </div>
+        </Container>
     );
 }
 
