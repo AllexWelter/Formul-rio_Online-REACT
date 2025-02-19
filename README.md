@@ -1,71 +1,116 @@
-# Getting Started with Create React App
+# Formulário Online (Quiz)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Descrição do Projeto
+O **Formulário Online (Quiz)** é um projeto de questionário interativo onde os usuários podem responder a 10 perguntas com 4 alternativas cada. No final, a pontuação é exibida na tela, e há a opção de enviar o resultado por e-mail.
 
-## Available Scripts
+## Tecnologias Utilizadas
 
-In the project directory, you can run:
+### Frontend
+- React
+- React Bootstrap
+- React Router DOM
+- Axios
 
-### `npm start`
+### Backend
+- Node.js
+- Express
+- MySQL2
+- Dotenv
+- CORS
+- Nodemailer
+- Nodemon
+- Yup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Como Rodar o Projeto
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 1. Clonar os Repositórios
+```bash
+# Backend
+git clone https://github.com/AllexWelter/Formulario_Online-BACK_END.git
 
-### `npm test`
+# Frontend
+git clone https://github.com/AllexWelter/Formul-rio_Online-REACT.git
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2. Configurar o Backend
+```bash
+cd Formulario_Online-BACK_END
+npm install
+```
+Criar um arquivo `.env` e configurar as credenciais do banco de dados e e-mail.
 
-### `npm run build`
+```env
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=sua_senha
+DB_NAME=quiz_db
+EMAIL_USER=seu_email
+EMAIL_PASS=sua_senha
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Iniciar o backend:
+```bash
+npm start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 3. Configurar o Frontend
+```bash
+cd ../Formul-rio_Online-REACT
+npm install
+npm start
+```
+O frontend será iniciado em `http://localhost:3000`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Endpoints da API
 
-### `npm run eject`
+### Criar um Quiz
+**POST** `/api/iniciar`
+- Verifica se o usuário existe, cria um registro e inicia o quiz.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Buscar Perguntas
+**GET** `/api/perguntas/:numero`
+- Retorna uma pergunta e suas alternativas com base no ID.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Enviar Respostas
+**POST** `/api/enviar`
+- Valida e registra as respostas do usuário, calcula a pontuação e salva no banco.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Enviar Resultado por Email
+**GET** `/api/email/:idQuiz`
+- Verifica o quiz e envia um e-mail com a pontuação.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Estrutura do Banco de Dados
 
-## Learn More
+### Tabela `usuarios`
+Armazena informações dos usuários.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+| id_usuario | nome | email |
+|------------|------|-------|
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Tabela `usuario_quiz`
+Registra a participação dos usuários no quiz.
 
-### Code Splitting
+| id_quiz | id_usuario | data_inicio | data_termino | pontuacao |
+|---------|------------|-------------|--------------|-----------|
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Tabela `perguntas`
+Lista as perguntas do quiz.
 
-### Analyzing the Bundle Size
+| id_pergunta | texto |
+|-------------|-------|
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Tabela `alternativas`
+Contém as alternativas de cada pergunta.
 
-### Making a Progressive Web App
+| id_alternativa | id_pergunta | texto | pontuacao |
+|---------------|-------------|-------|-----------|
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Tabela `usuarios_quiz_respostas`
+Registra as respostas dos usuários.
 
-### Advanced Configuration
+| id_quiz_resposta | id_quiz | id_alternativa |
+|------------------|--------|--------------|
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Contribuição
+Sinta-se à vontade para testar e contribuir com melhorias! 🚀
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# Formul-rio_Online-REACT
