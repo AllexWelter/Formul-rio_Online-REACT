@@ -4,7 +4,6 @@ import api from '../services/api';
 import { Container, Card, Form, Button } from 'react-bootstrap';
 import '../styles/Inicio.css';
 
-
 function Inicio() {
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
